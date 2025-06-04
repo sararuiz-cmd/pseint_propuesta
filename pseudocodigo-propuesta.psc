@@ -72,7 +72,7 @@ Algoritmo propuesta_final
 		valido=Verdadero
 		Escribir "Ingrese el mes (en números) en que desea calcular el gasto de energía"
 		leer numero_mes
-		si numero_mes<0 o numero_mes>=12 Entonces
+		si numero_mes<1 o numero_mes>12 Entonces
 			valido=Falso
 			Escribir "El valor debe ser numérico y estar en el rango (1-12)"
 		FinSi
