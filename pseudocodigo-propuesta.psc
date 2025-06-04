@@ -65,4 +65,5 @@ Algoritmo propuesta_final
 	// CÁLCULOS
 	consumo_anual <- suma / precio_kw
 
+
 FinAlgoritmo
