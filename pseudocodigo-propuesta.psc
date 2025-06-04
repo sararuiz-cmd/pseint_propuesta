@@ -1,8 +1,8 @@
 Algoritmo propuesta_final
 	Definir nombre_cliente, direccion, letra Como Caracter
-	Definir consumo_anual, consumo_mensual, suma, precio_kw, monto_total Como Real
+	Definir consumo_anual, consumo_mensual, suma, precio_kw, monto_total,consumo_mensual_actual,gasto_mensual_actual Como Real
 	Definir valido Como Logico
-	Definir mes Como Entero
+	Definir mes,numero_mes Como Entero
 	
 	suma <- 0
 	precio_kw <- 0.13
@@ -46,7 +46,8 @@ Algoritmo propuesta_final
 		FinSi
 	Hasta Que valido = Verdadero
 	
-	// ENTRADA DE GASTOS MENSUALES
+	// ENTRADA DE GASTOS MENSUALES PASADOS
+	Escribir "Cálculo del consumo anual del año pasado"
 	Para mes <- 1 Hasta 12
 		Repetir
 			valido <- Verdadero
@@ -64,6 +65,34 @@ Algoritmo propuesta_final
 	
 	// CÁLCULOS
 	consumo_anual <- suma / precio_kw
-
+	//CÁLCULO DEL GASTO DE UN DETERMINADO MES
+	//VALIDACIÓN DE ENTRADAS
+	acumulacion=0 //INICIALIZAR CONTADOR PARA SUMAR LOS GASTOS DE CADA MES
+	Repetir
+		valido=Verdadero
+		Escribir "Ingrese el mes (en números) en que desea calcular el gasto de energía"
+		leer numero_mes
+		si numero_mes<0 o numero_mes>=12 Entonces
+			valido=Falso
+			Escribir "El valor debe ser numérico y estar en el rango (1-12)"
+		FinSi
+	Hasta Que valido=Verdadero
+	Para j<-1 Hasta numero_mes Con Paso +1 Hacer
+		Repetir
+			valido=Verdadero
+			Escribir "Ingrese el gasto del mes ",j
+			Leer consumo_mensual_actual
+			si consumo_mensual_actual<0 Entonces
+				valido=Falso
+				Escribir "El valor debe ser positivo"
+			FinSi
+		Hasta Que valido=Verdadero
+		acumulacion=acumulacion+consumo_mensual_actual
+	Fin Para
+	gasto_mensual_actual=consumo_anual-acumulacion
+	
+	
+	
+	
 
 FinAlgoritmo
