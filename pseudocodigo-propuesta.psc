@@ -1,5 +1,5 @@
 Algoritmo propuesta_final
-	Definir nombre_cliente, direccion, letra,funcionamiento_meses, produccion_mensual_entrada Como Caracter
+	Definir nombre_cliente, direccion, letra,funcionamiento_meses, produccion_mensual_entrada,capacidad_planta,respuesta,acumulado_mes_n Como Caracter
 	Definir precio_kw Como Real
 	Definir valido Como Logico
 	precio_kw <- 0.13
@@ -46,9 +46,44 @@ Algoritmo propuesta_final
             FinPara
         FinSi
 		Si No valido Entonces
-			Escribir "Error: dirección inválidos. Solo letras sin números ni símbolos."
+			Escribir "Error: dirección inválidos. Solo letras y números, sin símbolos."
 		FinSi
 	Hasta Que valido = Verdadero
+	//CAPACIDAD DE LA PLANTA
+	Repetir
+		valido=Verdadero
+		contadorPuntos=0
+		Escribir "Ingrese la capacidad de producción la planta (en kw): "
+		Leer capacidad_planta
+		Si Longitud(capacidad_planta) = 0 Entonces
+			valido <- Falso
+		Sino
+			Para j <- 1 Hasta Longitud(capacidad_planta)
+				character <- SubCadena(capacidad_planta, j, j)
+				
+				Si character = "." Entonces
+					contadorPuntos <- contadorPuntos + 1
+					Si contadorPuntos > 1 Entonces
+						valido <- Falso
+					FinSi
+				Sino
+					Si character < "0"  o character>"9" Entonces
+						valido <- Falso
+					FinSi
+				FinSi
+			FinPara
+		FinSi
+		
+		// Evitar punto al principio o final
+		Si SubCadena(capacidad_planta, 1, 1) = "." O SubCadena(capacidad_planta, Longitud(capacidad_planta), Longitud(capacidad_planta)) = "." Entonces
+			valido <- Falso
+		FinSi
+		Si No valido Entonces
+			Escribir "Capacidad inválida. Ingrese un número positivo, con o sin decimales (use punto, no coma)."
+		FinSi
+		
+	Hasta Que valido=Verdadero
+	capacidad_planta_numero=ConvertirANumero(capacidad_planta)
 	
 	//TIEMPO DE FUNCIONALIDAD DE LA PLANTA
 	Repetir
@@ -70,61 +105,79 @@ Algoritmo propuesta_final
         FinSi
 	Hasta Que valido=Verdadero
 	numero_mes=ConvertirANumero(funcionamiento_meses)
-	//ENTRADA DE LA ACUMULACIÓN DE PRODUCCIÓN DE ENERGÍA MENSUAL
-	Dimensionar produccion_mensual[2]
-	Escribir "Ingrese la producción (en bruto) de los primeros dos meses"
-	para i=1 hasta 2
-		Repetir
-			valido=Verdadero
-			contadorPuntos=0
-			Escribir "Ingrese la producción mensual del mes ",i, ":"
-			leer produccion_mensual_entrada
-			Si Longitud(produccion_mensual_entrada) = 0 Entonces
+	
+	//CÁLCULOS
+	//Se calcula la eficiencia de la planta(restándole un 80% debido a factores como pérdidas por instalación, eficiencia de paneles e inversores, entre otros.
+	//La eficiencia obtenida se multiplica por las horas solares promedio en que un panel produce energía (4.5 horas estimadas)
+	//Se multiplica lo obtenido para encontrar la producción solar en un mes
+	//Se definen los limites(superiores e inferiores) para posteriormente, utilizar la Función random
+	//Para definir los límites, se toma en cuenta una desviación estándar del 5%, es decir, que los demás datos de produccion mensual pueden variar en un 5% aproximadamente, basados en el valor central(producción en el mes, que lo tomamos como promedio de producción mensual)
+	//Se multiplica la producción solar en un mes por (1-0.05) para límite inferior, y por (1+0.05) para el superior
+	//El "1" representa el 100% del valor actual, y como le queremos restar 5%, aplicamos "(1-0.05), lo mismo para el límite superior
+	//De esta forma obtenemos valores lógicos generados por random, que mostrarán la producción estimada de cada mes, en función de la capacidad de la planta.
+	eficiencia=capacidad_planta_numero*0.8
+	horas_solares=4.5
+	produccion_dia=eficiencia*horas_solares
+	produccion_mes=produccion_dia*30
+	Dimensionar mes[numero_mes]
+	//Creamos un arreglo para aguardar la produccion mensual
+	produccion_acumulada_total=0
+	para i=1 hasta numero_mes
+		produccion_mensual=Aleatorio((produccion_mes*0.95),(produccion_mes*1.05))
+		mes[i]=produccion_mensual
+		produccion_acumulada_total=produccion_acumulada_total+produccion_mensual
+		
+	FinPara
+	
+	// Mostrar en el resultado
+	Para j<-1 Hasta numero_mes Hacer
+		Escribir "Mes ",j," : ",mes[j]
+	Fin Para
+	//
+	//Produccion acumulada
+	Escribir produccion_acumulada_total
+	//facturacion del ultimo mes
+	facturar=mes[numero_mes]*precio_kw
+	Escribir facturar
+	//Facturación acumulada total
+	Fac_acumulada_total=produccion_acumulada_total*precio_kw
+	Escribir Fac_acumulada_total
+	//(Lo de abajo es antes de mostrar el total_)
+	//Preguntar al usuario si quiere saber la factura acumulada hasta el mes que ingrese
+	Repetir
+		valido=Verdadero
+		Escribir "Desea saber la facturación acumulada hasta cierto mes? (Si/No)"
+		Leer Mayusculas(respuesta)
+		Si Longitud(respuesta) = 0 Entonces 
+			valido <- Falso
+		Sino
+			Si respuesta<>"SI" O respuesta<>"SÍ" o respuesta<>"NO" Entonces
+				valido=Falso
+			FinSi
+		SiNo
+			respuesta="SI" o respuesta="SÍ" Entonces
+			Escribir "Ingrese el mes que desea consultar: "
+			Leer acumulado_mes_n
+			Si Longitud(acumulado_mes_n) = 0 Entonces
 				valido <- Falso
 			Sino
-				Para j <- 1 Hasta Longitud(produccion_mensual_entrada)
-					caracter <- SubCadena(produccion_mensual_entrada, j, j)
-					
-					Si character = "." Entonces
-						contadorPuntos <- contadorPuntos + 1
-						Si contadorPuntos > 1 Entonces
-							valido <- Falso
-						FinSi
-					Sino
-						Si caracter < "0" O caracter > "9" Entonces
-							valido <- Falso
-						FinSi
+				Para i<- 1 Hasta Longitud(acumulado_mes_n)
+					character <- SubCadena(acumulado_mes_n, i, i)
+					Si character < "0" O character > "9" Entonces
+						valido<- Falso
 					FinSi
 				FinPara
 			FinSi
 			
-            // Evitar punto al principio o final
-			Si SubCadena(produccion_mensual_entrada, 1, 1) = "." O SubCadena(produccion_mensual_entrada, Longitud(produccion_mensual_entrada), Longitud(produccion_mensual_entrada)) = "." Entonces
-				valido <- Falso
-			FinSi
-			
-			Si No valido Entonces
-				Escribir "Producción inválida. Ingrese un número positivo, con o sin decimales (use punto, no coma)."
-			FinSi
-		Hasta Que valido=Verdadero
-		produccion_mensual[i]=ConvertirANumero(produccion_mensual_entrada)
+		FinSi
+	
 		
-	FinPara
+	Hasta Que valido=Verdadero
+	
+	
+	
+	
+	
 
 	
-	//CÁLCULO DE LA ACUMULACIÓN Y LA PRODUCCIÓN MENSUAL
-	acumulacion_inicial=produccion_mensual[1]+produccion_mensual[2]
-	mes_siguiente=acumulacion_inicial-produccion_mensual[1]
-	j=0
-	Mientras j<=numero_mes
-		acumulacion_inicial_variable=mes_siguiente+acumulacion_inicial
-		j=j+acumulacion_inicial_variable
-	FinMientras
-	k=0
-	Mientras k<=numero_mes
-		acumulacion_anterior=acumulacion_inicial_variable-acumulacion_inicial
-		k=k+acumulacion_anterior
-	FinMientras
-	facturar=j-k
-	Escribir facturar
 FinAlgoritmo
