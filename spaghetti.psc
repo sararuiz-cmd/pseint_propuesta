@@ -192,8 +192,8 @@ Algoritmo propuesta_final
 	Escribir '    Detalles de producción: '
 	Escribir "           "
 	Escribir "           "
-	Escribir "                      Produccción acumulada hasta ", nombreMes ,'  :   ',produccion_acumulada_total
-	Escribir "                      Corte                       ", nombre ,'     : ',produccion_acumulada_total - mes[numero_mes]
+	Escribir "                      Produccción acumulada hasta ", nombreMes ,'  :   ',produccion_acumulada_total, 'kw'
+	Escribir "                      Corte                       ", nombre ,'     : ',produccion_acumulada_total - mes[numero_mes] , 'kw'
 	Escribir "                      Producción Mes Actual       ' , nombreMes, ' : ' ,mes[numero_mes] ,' kw'
 	Escribir "                      A facturar ", mes[numero_mes] , ' * $0.13       ' ' :      ' '$' mes[numero_mes] * 0.13  
 	Escribir '                      la facturación acumulada hasta ',nombreMes, ': ' , '$', Fac_acumulada_total
@@ -208,7 +208,7 @@ Algoritmo propuesta_final
 	Repetir
 		valido <- Verdadero
 		
-		Escribir "Desea saber la facturación acumulada hasta cierto mes? (Si/No)"
+		Escribir "¿Desea saber la facturación acumulada hasta cierto mes? (Si/No)"
 		Leer respuesta
 		respuesta <- Mayusculas(respuesta)
 		
@@ -220,31 +220,44 @@ Algoritmo propuesta_final
 			FinSi
 		FinSi
 		
-		Si respuesta = "SI" O respuesta = "SÍ" Entonces
-			Escribir "Ingrese el mes que desea consultar(solo número del mes): "
-			Leer acumulado_mes_n
-			
-			Si Longitud(acumulado_mes_n) = 0 Entonces
-				valido <- Falso
-			Sino
-				Para i <- 1 Hasta Longitud(acumulado_mes_n)
-					character <- SubCadena(acumulado_mes_n, i, i)
-					Si No (character >= "0" Y character <= "9") Entonces
+		Si (respuesta = "SI" O respuesta = "SÍ") Y valido Entonces
+			Repetir
+				valido <- Verdadero
+				Escribir "Ingrese el número del mes a consultar (1 a ", numero_mes, "):"
+				Leer acumulado_mes_n
+				
+				// Validación de que solo hay dígitos
+				Si Longitud(acumulado_mes_n) = 0 Entonces
+					valido <- Falso
+				Sino
+					Para i <- 1 Hasta Longitud(acumulado_mes_n)
+						character <- SubCadena(acumulado_mes_n, i, i)
+						Si No (character >= "0" Y character <= "9") Entonces
+							valido <- Falso
+						FinSi
+					FinPara
+				FinSi
+				
+				Si valido Entonces
+					monthly_accumulation_n <- ConvertirANumero(acumulado_mes_n)
+					
+					// Validación de rango
+					Si monthly_accumulation_n < 1 O monthly_accumulation_n > numero_mes Entonces
 						valido <- Falso
+						Escribir "Error: Solo hay datos hasta el mes ", numero_mes, ". Ingrese un mes válido."
 					FinSi
-				FinPara
-			FinSi
+				Sino
+					Escribir "Entrada no válida. Ingrese solo números enteros positivos."
+				FinSi
+			Hasta Que valido = Verdadero
 			
-			monthly_accumulation_n <- ConvertirANumero(acumulado_mes_n) //e
+			// Cálculo de acumulado
 			accumulated_bill <- 0
-			i <- 1
-			
-			Mientras i <= numero_mes Y i <= monthly_accumulation_n Hacer
+			Para i <- 1 Hasta monthly_accumulation_n
 				accumulated_bill <- accumulated_bill + mes[i]
-				i <- i + 1
-			FinMientras
+			FinPara
 			
-			mes_nombre_1 = ((monthly_accumulation_n - 1) Mod 12) + 1  // Esto ajusta el mes para que esté dentro del rango 1-12
+			mes_nombre_1 <- ((monthly_accumulation_n - 1) Mod 12) + 1
 			
 			Segun mes_nombre_1 Hacer
 				1: nombre_Mes = "Enero"
@@ -260,16 +273,15 @@ Algoritmo propuesta_final
 				11: nombre_Mes = "Noviembre"
 				12: nombre_Mes = "Diciembre"
 			Fin Segun
-
 			
-			Escribir "Facturación acumulada hasta ", nombre_Mes, ": ",'$',accumulated_bill*precio_kw
+			Escribir "Facturación acumulada hasta ", nombre_Mes, ": $", accumulated_bill * precio_kw
 		FinSi
 		
 		Si No valido Entonces
 			Escribir "Error: Entrada incorrecta. Por favor, intente nuevamente."
 		FinSi
 		
-	Hasta Que valido = Verdadero
+	Hasta Que respuesta = "NO"
 	
 	
 	
