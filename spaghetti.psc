@@ -145,30 +145,32 @@ Algoritmo propuesta_final
 		11: nombreMes = "Noviembre"
 		12: nombreMes = "Diciembre"
 	Fin Segun
-
 	
-	// Mostrar en el resultado
-	Para j<-1 Hasta numero_mes Hacer
-		Escribir "Mes ",j," : ",mes[j] , " kw'
-	Fin Para
-	//
-	//Produccion acumulada
-	Escribir 'la acumulacion de la produción es ', produccion_acumulada_total
-	//facturacion del ultimo mes
-	facturar=mes[numero_mes]*precio_kw
-	Escribir 'la factura del ultimo mes es ',facturar
-	//Facturación acumulada total
-	Fac_acumulada_total=produccion_acumulada_total*precio_kw
-	Escribir 'la facturación acumulada hasta ',nombreMes, ' es ' , Fac_acumulada_total
-	//(Lo de abajo es antes de mostrar el total_)
-	//Preguntar al usuario si quiere saber la factura acumulada hasta el mes que ingrese
+	mes_anterior <- ((numero_mes - 2 + 12) Mod 12) + 1 //para mostrar el anterior (tu culpa sara >:B)
+	Segun mes_anterior Hacer
+		1: nombre = "Enero"
+		2: nombre = "Febrero"
+		3: nombre = "Marzo"
+		4: nombre = "Abril"
+		5: nombre = "Mayo"
+		6: nombre = "Junio"
+		7: nombre = "Julio"
+		8: nombre = "Agosto"
+		9: nombre = "Septiembre"
+		10: nombre = "Octubre"
+		11: nombre = "Noviembre"
+		12: nombre = "Diciembre"
+	Fin Segun
+	
+	
+	Fac_acumulada_total=produccion_acumulada_total*precio_kw//la suma de toda la produccion por el precio
 	
 	Escribir "           "
 	Escribir "           "
 	Escribir "           "
 	Escribir "           "
 	
-	Escribir 'Clientes :' , nombre_cliente
+	Escribir 'Cliente :' , nombre_cliente
 	
 	Escribir "           "
 	
@@ -190,7 +192,18 @@ Algoritmo propuesta_final
 	Escribir '    Detalles de producción: '
 	Escribir "           "
 	Escribir "           "
-	Escribir "                      Produccción acumulada hasta ", nombreMes ,' es '
+	Escribir "                      Produccción acumulada hasta ", nombreMes ,'  :   ',produccion_acumulada_total
+	Escribir "                      Corte                       ", nombre ,'     : ',produccion_acumulada_total - mes[numero_mes]
+	Escribir "                      Producción Mes Actual       ' , nombreMes, ' : ' ,mes[numero_mes] ,' kw'
+	Escribir "                      A facturar ", mes[numero_mes] , ' * $0.13       ' ' :      ' '$' mes[numero_mes] * 0.13  
+	Escribir '                      la facturación acumulada hasta ',nombreMes, ': ' , '$', Fac_acumulada_total
+	
+	
+	Escribir "           "
+	Escribir '                                                                    este valor no incluye IVA. '
+	Escribir "           "
+	
+	Escribir "           "
 	
 	Repetir
 		valido <- Verdadero
@@ -249,7 +262,7 @@ Algoritmo propuesta_final
 			Fin Segun
 
 			
-			Escribir "Facturación acumulada hasta ", nombre_Mes, ": ",accumulated_bill*precio_kw
+			Escribir "Facturación acumulada hasta ", nombre_Mes, ": ",'$',accumulated_bill*precio_kw
 		FinSi
 		
 		Si No valido Entonces
