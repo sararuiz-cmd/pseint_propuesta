@@ -4,34 +4,34 @@ Algoritmo propuesta_final
 	Definir valido, salir Como Logico
 	precio_kw <- 0.13
 	
-	Escribir "Algoritmo para calcular el consumo mensual de energÌa en dÛlares"
+	Escribir "Algoritmo para calcular el consumo mensual de energ√≠a en d√≥lares"
 	
-	// VALIDACI”N DE DATOS PERSONALES
+	// VALIDACI√ìN DE DATOS PERSONALES
 	Repetir
 		valido <- Verdadero
 		
 		Escribir "Ingrese el nombre del cliente:"
 		Leer nombre_cliente
-		Si Longitud(nombre_cliente) = 0 Entonces //Impide que la entrada estÈ vacÌa
+		Si Longitud(nombre_cliente) = 0 Entonces //Impide que la entrada est√© vac√≠a
 			valido <- Falso
 		Sino
-			Para i <- 1 Hasta Longitud(nombre_cliente) //Contador que recorre los car·cteres del nombre_cliente
+			Para i <- 1 Hasta Longitud(nombre_cliente) //Contador que recorre los car√°cteres del nombre_cliente
 				letra <- Subcadena(nombre_cliente, i, i)
-				Si No ((letra >= "A" Y letra <= "Z") O (letra >= "a" Y letra <= "z") O letra = "·" O letra = "È" O letra = "Ì" O letra = "Û" O letra = "˙" O letra = "Ò" O letra = "—" O letra = " ") Entonces
-					valido <- Falso  //ValidaciÛn de car·cteres
+				Si No ((letra >= "A" Y letra <= "Z") O (letra >= "a" Y letra <= "z") O letra = "√°" O letra = "√©" O letra = "√≠" O letra = "√≥" O letra = "√∫" O letra = "√±" O letra = "√ë" O letra = " ") Entonces
+					valido <- Falso  //Validaci√≥n de car√°cteres
 				FinSi
 			FinPara
 		FinSi
 		Si no valido Entonces
 			Escribir "Error: Nombre mal colocado, ingrese letras"
 		FinSi
-	Hasta Que valido=Verdadero //Si no se ingresan datos v·lidos, el bucle se repite
-	//Repetimos las validaciones anteriores en el inciso a continuaciÛn y en los que implican solicitar datos al usuario
+	Hasta Que valido=Verdadero //Si no se ingresan datos v√°lidos, el bucle se repite
+	//Repetimos las validaciones anteriores en el inciso a continuaci√≥n y en los que implican solicitar datos al usuario
 	
-	//DIRECCI”N
+	//DIRECCI√ìN
 	Repetir
 		valido=Verdadero
-		Escribir "Ingrese la ubicaciÛn del cliente:"
+		Escribir "Ingrese la ubicaci√≥n del cliente:"
 		Leer direccion
 		Si Longitud(direccion) = 0 Entonces
 			valido <- Falso
@@ -41,19 +41,19 @@ Algoritmo propuesta_final
 				Si No ((character >= "A" Y character <= "Z") O (character >= "a" Y character <= "z") O (character >= "0" Y character <= "9") O character = " ")
 					Entonces
                     valido <- Falso
-                    Escribir "Car·cter inv·lido encontrado: ", character
+                    Escribir "Car√°cter inv√°lido encontrado: ", character
                 FinSi
             FinPara
         FinSi
 		Si No valido Entonces
-			Escribir "Error: direcciÛn inv·lidos. Solo letras y n˙meros, sin sÌmbolos."
+			Escribir "Error: direcci√≥n inv√°lidos. Solo letras y n√∫meros, sin s√≠mbolos."
 		FinSi
 	Hasta Que valido = Verdadero
 	//CAPACIDAD DE LA PLANTA
 	Repetir
 		valido=Verdadero
 		contadorPuntos=0
-		Escribir "Ingrese la capacidad de producciÛn la planta (en kw): "
+		Escribir "Ingrese la capacidad de producci√≥n la planta (en kw): "
 		Leer capacidad_planta
 		Si Longitud(capacidad_planta) = 0 Entonces
 			valido <- Falso
@@ -79,7 +79,7 @@ Algoritmo propuesta_final
 			valido <- Falso
 		FinSi
 		Si No valido Entonces
-			Escribir "Capacidad inv·lida. Ingrese un n˙mero positivo, con o sin decimales (use punto, no coma)."
+			Escribir "Capacidad inv√°lida. Ingrese un n√∫mero positivo, con o sin decimales (use punto, no coma)."
 		FinSi
 		
 	Hasta Que valido=Verdadero
@@ -88,7 +88,7 @@ Algoritmo propuesta_final
 	//TIEMPO DE FUNCIONALIDAD DE LA PLANTA
 	Repetir
 		valido=Verdadero
-		Escribir "Ingrese el n˙mero total de meses de operaciÛn de la planta elÈctrica hasta la fecha actual:"
+		Escribir "Ingrese el n√∫mero total de meses de operaci√≥n de la planta el√©ctrica hasta la fecha actual:"
 		Leer funcionamiento_meses
 		Si Longitud(funcionamiento_meses) = 0 Entonces
 			valido <- Falso
@@ -101,20 +101,20 @@ Algoritmo propuesta_final
             FinPara
         FinSi
 		Si No valido Entonces
-            Escribir "Entrada no v·lida. Ingrese solo n˙meros enteros positivos, sin decimales ni sÌmbolos."
+            Escribir "Entrada no v√°lida. Ingrese solo n√∫meros enteros positivos, sin decimales ni s√≠mbolos."
         FinSi
 	Hasta Que valido=Verdadero
 	numero_mes=ConvertirANumero(funcionamiento_meses)
 	
-	//C¡LCULOS
-	//Se calcula la eficiencia de la planta(rest·ndole un 80% debido a factores como pÈrdidas por instalaciÛn, eficiencia de paneles e inversores, entre otros.
-	//La eficiencia obtenida se multiplica por las horas solares promedio en que un panel produce energÌa (4.5 horas estimadas)
-	//Se multiplica lo obtenido para encontrar la producciÛn solar en un mes
-	//Se definen los limites(superiores e inferiores) para posteriormente, utilizar la FunciÛn random
-	//Para definir los lÌmites, se toma en cuenta una desviaciÛn est·ndar del 5%, es decir, que los dem·s datos de produccion mensual pueden variar en un 5% aproximadamente, basados en el valor central(producciÛn en el mes, que lo tomamos como promedio de producciÛn mensual)
-	//Se multiplica la producciÛn solar en un mes por (1-0.05) para lÌmite inferior, y por (1+0.05) para el superior
-	//El "1" representa el 100% del valor actual, y como le queremos restar 5%, aplicamos "(1-0.05), lo mismo para el lÌmite superior
-	//De esta forma obtenemos valores lÛgicos generados por random, que mostrar·n la producciÛn estimada de cada mes, en funciÛn de la capacidad de la planta.
+	//C√ÅLCULOS
+	//Se calcula la eficiencia de la planta(rest√°ndole un 80% debido a factores como p√©rdidas por instalaci√≥n, eficiencia de paneles e inversores, entre otros.
+	//La eficiencia obtenida se multiplica por las horas solares promedio en que un panel produce energ√≠a (4.5 horas estimadas)
+	//Se multiplica lo obtenido para encontrar la producci√≥n solar en un mes
+	//Se definen los limites(superiores e inferiores) para posteriormente, utilizar la Funci√≥n random
+	//Para definir los l√≠mites, se toma en cuenta una desviaci√≥n est√°ndar del 5%, es decir, que los dem√°s datos de produccion mensual pueden variar en un 5% aproximadamente, basados en el valor central(producci√≥n en el mes, que lo tomamos como promedio de producci√≥n mensual)
+	//Se multiplica la producci√≥n solar en un mes por (1-0.05) para l√≠mite inferior, y por (1+0.05) para el superior
+	//El "1" representa el 100% del valor actual, y como le queremos restar 5%, aplicamos "(1-0.05), lo mismo para el l√≠mite superior
+	//De esta forma obtenemos valores l√≥gicos generados por random, que mostrar√°n la producci√≥n estimada de cada mes, en funci√≥n de la capacidad de la planta.
 	eficiencia=capacidad_planta_numero*0.2
 	horas_solares=4.5
 	produccion_dia=eficiencia*horas_solares
@@ -128,8 +128,9 @@ Algoritmo propuesta_final
 		produccion_acumulada_total=produccion_acumulada_total+produccion_mensual
 		
 	FinPara
+	Fac_acumulada_total=produccion_acumulada_total*precio_kw//la suma de toda la produccion por el precio
 	
-	mes_calculado = ((numero_mes - 1) Mod 12) + 1  // Esto ajusta el mes para que estÈ dentro del rango 1-12
+	mes_calculado = ((numero_mes - 1) Mod 12) + 1  // Esto ajusta el mes para que est√© dentro del rango 1-12
 	
 	Segun mes_calculado Hacer
 		1: nombreMes = "Enero"
@@ -146,7 +147,7 @@ Algoritmo propuesta_final
 		12: nombreMes = "Diciembre"
 	Fin Segun
 	
-	mes_anterior <- ((numero_mes - 2 + 12) Mod 12) + 1 //para mostrar el anterior (tu culpa sara >:B)
+	mes_anterior <- ((numero_mes - 2 + 12) Mod 12) + 1 //para mostrar el anterior 
 	Segun mes_anterior Hacer
 		1: nombre = "Enero"
 		2: nombre = "Febrero"
@@ -161,108 +162,155 @@ Algoritmo propuesta_final
 		11: nombre = "Noviembre"
 		12: nombre = "Diciembre"
 	Fin Segun
-	
-	
-	Fac_acumulada_total=produccion_acumulada_total*precio_kw//la suma de toda la produccion por el precio
-	
-	Escribir "           "
-	Escribir "           "
-	Escribir "           "
-	Escribir "           "
-	
-	Escribir 'Cliente :' , nombre_cliente
-	
-	Escribir "           "
-	
-	Escribir "           "
-	
-	Escribir "           "
-	
-	
-	Escribir "    UbicaciÛn : ", direccion
-	
-	Escribir "           "
-	
-	Escribir '    Capacidad: ', capacidad_planta, ' kwp'
-	
-	Escribir "           "
-	
-	Escribir "           "
-	
-	Escribir '    Detalles de producciÛn: '
-	Escribir "           "
-	Escribir "           "
-	Escribir "                      ProduccciÛn acumulada hasta ", nombreMes ,'  :   ',produccion_acumulada_total
-	Escribir "                      Corte                       ", nombre ,'     : ',produccion_acumulada_total - mes[numero_mes]
-	Escribir "                      ProducciÛn Mes Actual       ' , nombreMes, ' : ' ,mes[numero_mes] ,' kw'
-	Escribir "                      A facturar ", mes[numero_mes] , ' * $0.13       ' ' :      ' '$' mes[numero_mes] * 0.13  
-	Escribir '                      la facturaciÛn acumulada hasta ',nombreMes, ': ' , '$', Fac_acumulada_total
-	
-	
-	Escribir "           "
-	Escribir '                                                                    este valor no incluye IVA. '
-	Escribir "           "
-	
-	Escribir "           "
-	
+	// CONSULTA ADICIONAL
 	Repetir
 		valido <- Verdadero
 		
-		Escribir "Desea saber la facturaciÛn acumulada hasta cierto mes? (Si/No)"
+		Escribir "¬øDesea saber la facturaci√≥n acumulada hasta cierto mes? (Si/No):"
 		Leer respuesta
 		respuesta <- Mayusculas(respuesta)
 		
 		Si Longitud(respuesta) = 0 Entonces
+			Escribir "Error: No puede dejar la respuesta vac√≠a."
 			valido <- Falso
 		Sino
-			Si respuesta <> "SI" Y respuesta <> "SÕ" Y respuesta <> "NO" Entonces
+			Si respuesta <> "SI" Y respuesta <> "S√ç" Y respuesta <> "NO" Entonces
 				valido <- Falso
 			FinSi
 		FinSi
 		
-		Si respuesta = "SI" O respuesta = "SÕ" Entonces
-			Escribir "Ingrese el mes que desea consultar(solo n˙mero del mes): "
-			Leer acumulado_mes_n
+		// SI EL USUARIO QUIERE CONSULTAR FACTURACI√ìN HASTA CIERTO MES
+		Si (respuesta = "SI" O respuesta = "S√ç") Y valido Entonces
 			
-			Si Longitud(acumulado_mes_n) = 0 Entonces
-				valido <- Falso
-			Sino
-				Para i <- 1 Hasta Longitud(acumulado_mes_n)
-					character <- SubCadena(acumulado_mes_n, i, i)
-					Si No (character >= "0" Y character <= "9") Entonces
-						valido <- Falso
+			// VALIDACI√ìN DEL MES A CONSULTAR
+			Repetir
+				valido_mes <- Verdadero
+				Escribir "Ingrese el n√∫mero del mes que desea consultar (1 a ", numero_mes, "):"
+				Leer acumulado_mes_n
+				
+				Si Longitud(acumulado_mes_n) = 0 Entonces
+					valido_mes <- Falso
+				Sino
+					Para i <- 1 Hasta Longitud(acumulado_mes_n)
+						caracter <- SubCadena(acumulado_mes_n, i, i)
+						Si No (caracter >= "0" Y caracter <= "9") Entonces
+							Escribir "Error: Solo se permiten n√∫meros enteros positivos."
+							valido_mes <- Falso
+						FinSi
+					FinPara
+				FinSi
+				
+				Si valido_mes Entonces
+					monthly_accumulation_n <- ConvertirANumero(acumulado_mes_n)
+					Si monthly_accumulation_n < 1 O monthly_accumulation_n > numero_mes Entonces
+						Escribir "Error: El mes debe estar entre 1 y ", numero_mes, "."
+						valido_mes <- Falso
 					FinSi
-				FinPara
-			FinSi
+				FinSi
+			Hasta Que valido_mes
 			
-			monthly_accumulation_n <- ConvertirANumero(acumulado_mes_n) //e
+			// C√°lculo si la entrada es v√°lida
 			accumulated_bill <- 0
-			i <- 1
-			
-			Mientras i <= numero_mes Y i <= monthly_accumulation_n Hacer
+			Para i <- 1 Hasta monthly_accumulation_n
 				accumulated_bill <- accumulated_bill + mes[i]
-				i <- i + 1
-			FinMientras
+			FinPara
 			
-			mes_nombre_1 = ((monthly_accumulation_n - 1) Mod 12) + 1  // Esto ajusta el mes para que estÈ dentro del rango 1-12
-			
+			mes_nombre_1 <- ((monthly_accumulation_n - 1) Mod 12) + 1
 			Segun mes_nombre_1 Hacer
-				1: nombre_Mes = "Enero"
-				2: nombre_Mes = "Febrero"
-				3: nombre_Mes = "Marzo"
-				4: nombre_Mes = "Abril"
-				5: nombre_Mes = "Mayo"
-				6: nombre_Mes = "Junio"
-				7: nombre_Mes = "Julio"
-				8: nombre_Mes = "Agosto"
-				9: nombre_Mes = "Septiembre"
-				10: nombre_Mes = "Octubre"
-				11: nombre_Mes = "Noviembre"
-				12: nombre_Mes = "Diciembre"
-			Fin Segun
+				1: nombre_Mes <- "Enero"
+				2: nombre_Mes <- "Febrero"
+				3: nombre_Mes <- "Marzo"
+				4: nombre_Mes <- "Abril"
+				5: nombre_Mes <- "Mayo"
+				6: nombre_Mes <- "Junio"
+				7: nombre_Mes <- "Julio"
+				8: nombre_Mes <- "Agosto"
+				9: nombre_Mes <- "Septiembre"
+				10: nombre_Mes <- "Octubre"
+				11: nombre_Mes <- "Noviembre"
+				12: nombre_Mes <- "Diciembre"
+			FinSegun
+			//Para calcular la fecha actual
+			fa <- FechaActual() // retorna un solo nro entero en formato AAAAMMDD
+			anio <- trunc(fa/10000)
+			mes_fecha <- trunc(fa/100)%100
+			dia <- fa%100
+			// MOSTRAR FACTURA CON CONSULTA
+			Escribir "==============================================================="
+			Escribir "       REPORTE RESUMIDO DE PRODUCCI√ìN DE PLANTA SOLAR"
+			Escribir "==============================================================="
+			Escribir "---------------------------------------------------------------"
+			Escribir "Fecha de emisi√≥n del reporte: ", dia, "/", mes_fecha, "/", anio
+			Escribir "---------------------------------------------------------------"
+			Escribir "---------------------------------------------------------------"
+			Escribir "                DATOS DEL PROVEEDOR              "
+			Escribir "----------------------------------------------------------------"
+			Escribir "Nombre del proveedor: Ing. Milton Ruiz"
+			Escribir "Departamento: Ventas"
+			Escribir "Tel√©fono: +(505) 22512800"
+			Escribir "Celular: +(505) 8631 7616"
+			Escribir "Email: sclientes@sencomca.com"
+			Escribir "Direcci√≥n: km 6 Carretera Norte"
+			Escribir "----------------------------------------------------------------"
+			Escribir "                DATOS DEL CLIENTE                "
+			Escribir "----------------------------------------------------------------"
+			Escribir "  Cliente: ", nombre_cliente
+			Escribir "  Ubicaci√≥n: ", direccion
+			Escribir "  Capacidad de la planta: ", capacidad_planta," kW"
+			Escribir "----------------------------------------------------------------"
+			Escribir "                DETALLES DE PRODUCCI√ìN               "
+			Escribir "----------------------------------------------------------------"
+			Escribir "  Producci√≥n acumulada hasta ", nombreMes, ": ", produccion_acumulada_total, " kWh"
+			Escribir "  Corte del mes anterior (", nombre, "): ", produccion_acumulada_total - mes[numero_mes], " kWh"
+			Escribir "  Producci√≥n del mes actual (", nombreMes, "): ", mes[numero_mes], " kWh"
+			Escribir "  A facturar: ", mes[numero_mes], " * $0.13           : $", mes[numero_mes] * 0.13
+			Escribir "  Facturaci√≥n acumulada hasta ", nombreMes, " : $", Fac_acumulada_total
+			Escribir "  Facturaci√≥n acumulada hasta ", nombre_Mes, " : $", accumulated_bill * precio_kw
+			Escribir "   * Este valor no incluye IVA *"
+			Escribir "================================================================="
+			Escribir ""
 
-			
-			Escribir "FacturaciÛn acumulada hasta ", nombre_Mes, ": ",'$',accumulated_bill*precio_kw
+		Sino
+			Si respuesta = "NO" Entonces
+				//Para calcular la fecha actual
+				fa <- FechaActual() // retorna un solo nro entero en formato AAAAMMDD
+				anio <- trunc(fa/10000)
+				mes_fecha <- trunc(fa/100)%100
+				dia <- fa%100
+				// FACTURA NORMAL SIN CONSULTA
+				Escribir "==============================================================="
+				Escribir "       REPORTE RESUMIDO DE PRODUCCI√ìN DE PLANTA SOLAR"
+				Escribir "==============================================================="
+				Escribir "---------------------------------------------------------------"
+				Escribir "Fecha de emisi√≥n del reporte: ", dia, "/", mes_fecha, "/", anio
+				Escribir "---------------------------------------------------------------"
+				Escribir "---------------------------------------------------------------"
+				Escribir "                DATOS DEL PROVEEDOR              "
+				Escribir "----------------------------------------------------------------"
+				Escribir "Nombre del proveedor: Ing. Milton Ruiz"
+				Escribir "Departamento: Ventas"
+				Escribir "Tel√©fono: +(505) 22512800"
+				Escribir "Celular: +(505) 8631 7616"
+				Escribir "Email: sclientes@sencomca.com"
+				Escribir "Direcci√≥n: km 6 Carretera Norte"
+				Escribir "----------------------------------------------------------------"
+				Escribir "                DATOS DEL CLIENTE                "
+				Escribir "----------------------------------------------------------------"
+				Escribir "  Cliente: ", nombre_cliente
+				Escribir "  Ubicaci√≥n: ", direccion
+				Escribir "  Capacidad de la planta: ", capacidad_planta," kW"
+				Escribir "----------------------------------------------------------------"
+				Escribir "                DETALLES DE PRODUCCI√ìN               "
+				Escribir "----------------------------------------------------------------"
+				Escribir "  Producci√≥n acumulada hasta ", nombreMes, ": ", produccion_acumulada_total, " kWh"
+				Escribir "  Corte del mes anterior (", nombre, "): ", produccion_acumulada_total - mes[numero_mes], " kWh"
+				Escribir "  Producci√≥n del mes actual (", nombreMes, "): ", mes[numero_mes], " kWh"
+				Escribir "  A facturar: ", mes[numero_mes], " * $0.13           : $", mes[numero_mes] * 0.13
+				Escribir "  Facturaci√≥n acumulada hasta ", nombreMes, " : $", Fac_acumulada_total
+				Escribir "   * Este valor no incluye IVA *"
+				Escribir "================================================================="
+				Escribir ""
+			FinSi
 		FinSi
 		
 		Si No valido Entonces
@@ -270,10 +318,5 @@ Algoritmo propuesta_final
 		FinSi
 		
 	Hasta Que valido = Verdadero
-	
-	
-	
 
-
-	
 FinAlgoritmo
